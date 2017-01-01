@@ -8,10 +8,14 @@ var reference={};
 var count=0;
 app.get('/new/*', function (req, res) {//creating new url
   var link=req.path.substring(5);
-  var num=count.toString();
-  reference[num]=link;
-  count++;
-  res.send(JSON.stringify({ "original_url":link, "short_url":"https://power-church.gomix.me/"+num }));
+  if (link.toLowerCase().startsWith("http")){
+    var num=count.toString();
+    reference[num]=link;
+    count++;
+    res.send(JSON.stringify({ "original_url":link, "short_url":"https://power-church.gomix.me/"+num }));
+  }else{
+    res.send(JSON.stringify({"error":"Wrong url format, make sure you have a valid protocol and real site."}));
+  }
 })
 app.get('/', function (req, res) {//home
   res.sendFile(__dirname + '/views/index.html');
